@@ -1,0 +1,24 @@
+[handleMsg]:  {
+  key: {
+    remoteJid: '50372475482@s.whatsapp.net',
+    fromMe: false,
+    id: '3F76403AA987013D8DFC',
+    participant: undefined
+  },
+  messageTimestamp: 1742005845,
+  pushName: 'Javier',
+  broadcast: false,
+  message: Message {
+    extendedTextMessage: ExtendedTextMessage {
+      text: 'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXVobWJqOTR2YXlkZGNnejAwdG41cGZjeGY4cnVkNndwOHJxZWE3YiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/IRFQYGCokErS0/giphy.mp4',
+      contextInfo: [ContextInfo]
+    },
+    messageContextInfo: MessageContextInfo {
+      deviceListMetadata: [DeviceListMetadata],
+      deviceListMetadataVersion: 2
+    }
+  },
+  body: 'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXVobWJqOTR2YXlkZGNnejAwdG41cGZjeGY4cnVkNndwOHJxZWE3YiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/IRFQYGCokErS0/giphy.mp4',
+  name: 'Javier',
+  from: '50372475482'
+}
