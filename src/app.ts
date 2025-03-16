@@ -9,21 +9,39 @@ const main = async () => {
     provider.initHttpServer(3002);
 
     provider.http.server.post('/send-message', handleCtx(async (bot, req, res) => {
-        const { number, message, mediaUrl } = req.body;
-
-        if (!number || !message) {
-            res.end(JSON.stringify({ error: "El número y el mensaje son obligatorios." })); 
-            return;
-        }
-
         try {
-            await bot.sendMessage(number, message, {
-                media: mediaUrl || undefined,
-            });
-            res.end(JSON.stringify({ success: true, message: "Mensaje enviado correctamente." }));
+            let { numbers, message, mediaUrl } = req.body;
+
+            // Validación de datos
+            if (!numbers || !message) {
+                return res.end(JSON.stringify({ error: "Los números y el mensaje son obligatorios." }));
+            }
+
+            // Asegurar que numbers sea un array
+            const phoneNumbers = Array.isArray(numbers) ? numbers : [numbers];
+
+            // Filtrar números inválidos
+            const validNumbers = phoneNumbers.filter(num => typeof num === "string" && num.trim() !== "");
+
+            if (validNumbers.length === 0) {
+                return res.end(JSON.stringify({ error: "No se proporcionaron números válidos." }));
+            }
+
+            // Enviar los mensajes en paralelo
+            const results = await Promise.all(validNumbers.map(async (number) => {
+                try {
+                    await bot.sendMessage(number, message, { media: mediaUrl || undefined });
+                    return { number, status: "success" };
+                } catch (error) {
+                    console.error(`Error con ${number}:`, error);
+                    return { number, status: "error", error: error.message };
+                }
+            }));
+
+            return res.end(JSON.stringify({ success: true, results }));
         } catch (error) {
-            console.error("Error al enviar el mensaje:", error);
-            res.end(JSON.stringify({ error: "Error al enviar el mensaje." }));
+            console.error("Error en la API:", error);
+            return res.end(JSON.stringify({ error: "Error interno en el servidor." }));
         }
     }));
 
@@ -35,3 +53,4 @@ const main = async () => {
 };
 
 main();
+
